@@ -8,7 +8,7 @@ SELECT COUNT(movies.title) FROM movies
 JOIN directors ON movies.directors_id = directors.id
 WHERE full_name = 'Фрэнсис Форд Коппола'
 ;
--- 3.
+-- 3. Вывести количество снятых фильмов за последние 20 лет
 SELECT COUNT(*) FROM movies
 WHERE year BETWEEN (YEAR(CURDATE()) - 20) AND YEAR(CURDATE())
 ;
@@ -35,12 +35,12 @@ LIMIT 1
 -- 7.
 SELECT movies.title, genres.title FROM movies
 JOIN genres ON genres.id = movies.genres_id
-WHERE companies_id = ( 
-	SELECT companies.id FROM companies
-    JOIN movies ON movies.companies_id = companies.id
-    GROUP BY companies.id
-    ORDER BY SUM(movies.budget) DESC
-    LIMIT 1
+WHERE companies_id = (
+SELECT companies.id FROM companies
+JOIN movies ON movies.companies_id = companies.id
+GROUP BY companies.id
+ORDER BY SUM(movies.budget) DESC
+LIMIT 1
 )
 ;
 -- 8.
@@ -48,7 +48,7 @@ SELECT AVG(movies.budget) FROM movies
 JOIN companies ON movies.companies_id = companies.id
 WHERE companies.title = 'Warner Bros.'
 ;
--- 9. 
+-- 9.
 SELECT genres.title, COUNT(movies.title), AVG(movies.budget) FROM movies
 JOIN genres ON genres.id = movies.genres_id
 GROUP BY genres.title
